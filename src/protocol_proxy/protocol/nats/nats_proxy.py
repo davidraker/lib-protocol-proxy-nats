@@ -64,19 +64,22 @@ class NATSProxy(AsyncioProtocolProxy):
         for subject in message.get('topics'):
             self.nc.subscribe(subject, cb=self.on_message)
 
-    async def start(self):
-        # TODO: Listening server needs to be started for IPC. Do this in a start method.
-        pass
 
-    def launch_mqtt(parser: ArgumentParser) -> (ArgumentParser, Type[AsyncioProtocolProxy]):
-        # _log.debug(f'IN LAUNCH MQTT')
-        parser.add_argument('--servers', type=list[str], default=["nats://demo.nats.io:4222"],
-                            help='Address of the MQTT broker.')
-        # TODO: Add the options which can be passed to connect:
-        #  These might be passed as bus_kwargs or separated in final version.
-        #  They can be found here:
-        #  https://nats-io.github.io/nats.py/modules.html#nats.aio.client.Client.connect
-        return parser, NATSProxy
+async def run_proxy(servers, **kwargs):
+    # TODO: Need to decide how to really handle "bus_kwargs".
+    #  Probably just add "nats_" in front of any conflicts?
+    mp = NATSProxy(servers, **kwargs)
+    await mp.start()
 
-    if __name__ == '__main__':
-        sys.exit(launch(launch_mqtt))
+def launch_mqtt(parser: ArgumentParser) -> (ArgumentParser, Type[AsyncioProtocolProxy]):
+    # _log.debug(f'IN LAUNCH NATS')
+    parser.add_argument('--servers', type=list[str], default=["nats://demo.nats.io:4222"],
+                        help='Address of the MQTT broker.')
+    # TODO: Add the options which can be passed to connect:
+    #  These might be passed as bus_kwargs or separated in final version.
+    #  They can be found here:
+    #  https://nats-io.github.io/nats.py/modules.html#nats.aio.client.Client.connect
+    return parser, run_proxy
+
+if __name__ == '__main__':
+    sys.exit(launch(launch_mqtt))
