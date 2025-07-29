@@ -31,14 +31,14 @@ ignore_missing_imports = true
 ignore_missing_imports = true
 
 [tool.poetry]
-name = "volttron-lib-nats-proxy"
+name = "protocol-proxy-nats"
 version = "2.0.0rc0"
 description = "Volttron NATS Protocol Proxy implementation for the VOLTTRON platform.
 authors = ["The VOLTTRON Development Team <volttron@pnnl.gov>"]
 license = "Apache License 2.0"
 readme = "README.md"
-repository = "https://github.com/eclipse-volttron/volttron-lib-nats-proxy"
-homepage = "https://github.com/eclipse-volttron/volttron-lib-nats-proxy"
+repository = "https://github.com/eclipse-volttron/lib-protocol-proxy-nats"
+homepage = "https://github.com/eclipse-volttron/lib-protocol-proxy-nats"
 keywords = []
 packages = [ { include = "protocol_proxy", from = "src" } ]
 classifiers = [
