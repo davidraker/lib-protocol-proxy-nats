@@ -36,6 +36,10 @@ class NATSProxy(AsyncioProtocolProxy):
         for subject in self.subscribed_topics:
             self.nc.subscribe(subject, cb=self.on_message)
 
+    @staticmethod
+    def topic_delimiter() -> str:
+        return '.'
+
     async def on_message(self, msg: Msg):
         """The callback for when a PUBLISH message is received from the NATS server."""
         message = ProtocolProxyMessage(
