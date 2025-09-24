@@ -27,13 +27,10 @@ ignore_missing_imports = true
 [tool.mypy-pytz]
 ignore_missing_imports = true
 
-[tool.mypy-volttron]
-ignore_missing_imports = true
-
 [tool.poetry]
 name = "protocol-proxy-nats"
 version = "2.0.0rc0"
-description = "Volttron NATS Protocol Proxy implementation for the VOLTTRON platform.
+description = "NATS Protocol Proxy implementation.
 authors = ["The VOLTTRON Development Team <volttron@pnnl.gov>"]
 license = "Apache License 2.0"
 readme = "README.md"
