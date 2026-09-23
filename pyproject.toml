@@ -15,22 +15,14 @@ warn_unused_configs = true
 show_error_codes = true
 exclude = ['docs/']
 
-[tool.mypy-gevent]
-ignore_missing_imports = true
-
-[tool.mypy-mock]
-ignore_missing_imports = true
-
-[tool.mypy-pytest]
-ignore_missing_imports = true
-
-[tool.mypy-pytz]
+[[tool.mypy.overrides]]
+module = ["mock.*", "pytest.*", "nats.*"]
 ignore_missing_imports = true
 
 [tool.poetry]
 name = "protocol-proxy-nats"
-version = "2.0.0rc0"
-description = "NATS Protocol Proxy implementation.
+version = "2.0.0rc1"
+description = "NATS Protocol Proxy implementation."
 authors = ["The VOLTTRON Development Team <volttron@pnnl.gov>"]
 license = "Apache License 2.0"
 readme = "README.md"
@@ -50,9 +42,10 @@ classifiers = [
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
 nats-py = ">=2.11.0"
-protocol-proxy = ">=2.0.0rc0"
+protocol-proxy = ">=2.0.0rc2"
 
 [tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0"
 pytest-cov = "^6.0.0"
 mock = "^4.0.3"
 pre-commit = "^2.17.0"
