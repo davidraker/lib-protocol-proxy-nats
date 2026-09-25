@@ -33,6 +33,8 @@ DEFAULT_SERVER = 'nats://localhost:4222'
 
 
 class NATSProxy(AsyncioProtocolProxy):
+    LAUNCHER = 'launch_nats'
+
     def __init__(self, *, servers: str | list[str] = DEFAULT_SERVER, name: str | None = None,
                  user: str | None = None, password: str | None = None, nats_token: str | None = None,
                  connect_timeout: float = 2.0, max_reconnect_attempts: int = -1, reconnect_time_wait: float = 2.0,
@@ -241,6 +243,3 @@ def launch_nats(parser: ArgumentParser) -> tuple[ArgumentParser, Callable]:
                         help='Use TLS with the system CA certificates (true/false).')
     return parser, run_proxy
 
-
-if __name__ == '__main__':
-    sys.exit(launch(launch_nats))
