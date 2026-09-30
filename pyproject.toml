@@ -24,7 +24,7 @@ name = "protocol-proxy-nats"
 version = "2.0.0rc1"
 description = "NATS Protocol Proxy implementation."
 authors = ["The VOLTTRON Development Team <volttron@pnnl.gov>"]
-license = "Apache License 2.0"
+license = "Apache-2.0"
 readme = "README.md"
 repository = "https://github.com/eclipse-volttron/lib-protocol-proxy-nats"
 homepage = "https://github.com/eclipse-volttron/lib-protocol-proxy-nats"
@@ -42,7 +42,7 @@ classifiers = [
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
 nats-py = ">=2.11.0"
-protocol-proxy = ">=2.0.0rc2"
+protocol-proxy = ">=2.0.0rc3"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.0.0"
