@@ -152,6 +152,19 @@ class NATSProxy(AsyncioProtocolProxy):
         return message
 
     @staticmethod
+    def _wire_payload(message: dict) -> Any:
+        """The payload of a PUBLISH_REMOTE request. Binary payloads (protobuf, for instance) cannot ride the JSON
+        envelope directly, so the sender hex-encodes them and sets ``"encoding": "hex"``; they are published as
+        the raw bytes. The same convention is used for inbound payloads in ``on_message``."""
+        payload = message.get('payload')
+        if message.get('encoding') == 'hex' and isinstance(payload, str):
+            try:
+                return bytes.fromhex(payload)
+            except ValueError:
+                _log.warning('PUBLISH_REMOTE declares a hex payload that is not hex; publishing it as text.')
+        return payload
+
+    @staticmethod
     def _encode_payload(payload: Any) -> bytes:
         if payload is None:
             return b''
@@ -191,7 +204,7 @@ class NATSProxy(AsyncioProtocolProxy):
             _log.warning(f'{self.proxy_name}: Ignoring non string-to-string headers on "{subject}".')
             nats_headers = None
         try:
-            await self.nc.publish(subject, self._encode_payload(message.get('payload')), headers=nats_headers)
+            await self.nc.publish(subject, self._encode_payload(self._wire_payload(message)), headers=nats_headers)
         except (NATSError, OSError) as e:
             _log.warning(f'{self.proxy_name}: Publish to "{subject}" failed: {e!r}')
 

@@ -68,9 +68,12 @@ def test_publish_remote():
         p.nc.publish.assert_awaited_with('a.b', b'{"v": 1}', headers={'h': 'x'})
         await call(p, p.handle_publish_remote, {'topic': 'a.c', 'payload': 'text', 'headers': {'bad': 1}})
         p.nc.publish.assert_awaited_with('a.c', b'text', headers=None)
+        # Binary payloads ride the JSON envelope hex-encoded and are published as the raw bytes.
+        await call(p, p.handle_publish_remote, {'topic': 'a.d', 'payload': b'\x0a\x02\x08\xff'.hex(), 'encoding': 'hex'})
+        p.nc.publish.assert_awaited_with('a.d', b'\x0a\x02\x08\xff', headers=None)
         await call(p, p.handle_publish_remote, {'payload': 1})       # no topic
         await call(p, p.handle_publish_remote, b'not json')
-        assert p.nc.publish.await_count == 2
+        assert p.nc.publish.await_count == 3
     run(main())
 
 
